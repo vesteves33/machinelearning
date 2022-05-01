@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import plotly.express as px
 from pathlib import Path
 from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
 
 path = Path(__file__).parent
 
@@ -78,7 +79,7 @@ X_credit = ds.iloc[:, 1:4].values
 type(X_credit)
 
 #%%
-Y_credit = ds.iloc[:, 4].values
+y_credit = ds.iloc[:, 4].values
 
 #%%
 scaler_credit = StandardScaler()
@@ -91,4 +92,20 @@ X_credit[:,0].min(),  X_credit[:,1].min(),  X_credit[:,2].min()
 
 #%%
 X_credit[:,0].max(),  X_credit[:,1].max(),  X_credit[:,2].max()
-#
+
+
+#%%  Fazendo a separação dos dados para teste e treinamento
+
+X_credit_treinamento, X_credit_teste, y_credit_treinamento, y_credit_teste = train_test_split(X_credit, y_credit, test_size=0.25, random_state=0)
+
+X_credit_treinamento.shape
+y_credit_treinamento.shape
+#%%
+X_credit_teste.shape, y_credit_teste.shape
+
+#%%
+import pickle
+
+with open('credit.pkl', mode ='wb') as f:
+    pickle.dump([X_credit_treinamento,y_credit_treinamento, X_credit_teste, y_credit_teste], f)
+
